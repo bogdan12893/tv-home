@@ -57,10 +57,10 @@ body,
   text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* Clock and date in the top-right corner. */
+/* Clock and date on the right, level with the bottom of the app list. */
 .corner {
   position: absolute;
-  top: 40px;
+  bottom: 40px;
   right: 56px;
   text-align: right;
   text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
