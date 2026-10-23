@@ -38,11 +38,23 @@ body,
   object-fit: cover;
 }
 
-/* Darkens the top and bottom edges so the clock and dock always read. */
+/* Darkens the left side so the clock and app names always read on the photo. */
 .scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.28), transparent 30%, transparent 60%, rgba(0, 0, 0, 0.3));
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.2) 45%, transparent 70%);
+}
+
+/* Clock, date and the app list stacked down the left side. */
+.side {
+  position: absolute;
+  top: 40px;
+  bottom: 40px;
+  left: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
 }
 
 .glass {
@@ -74,14 +86,9 @@ body,
 }
 
 .empty {
-  position: absolute;
-  left: 40px;
-  right: 40px;
-  bottom: 32px;
   margin: 0;
-  padding: 40px;
-  text-align: center;
-  font-size: 18px;
+  font-size: 22px;
+  opacity: 0.85;
 }
 
 .toast {

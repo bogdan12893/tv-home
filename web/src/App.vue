@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { createBridge, SELF_PKG, type Bridge } from './bridge'
-import { formatTime, msToNextMinute } from './clock'
+import { formatDate, formatTime, msToNextMinute } from './clock'
 import { config } from './config'
 import { gridApps, resolveDock } from './dock'
 import { initialFocus, keyToAction, step, type Action } from './focus'
 import AllApps from './components/AllApps.vue'
 import Clock from './components/Clock.vue'
-import Dock from './components/Dock.vue'
+import AppList from './components/AppList.vue'
 import TopBar from './components/TopBar.vue'
 
 const props = defineProps<{ bridge?: Bridge }>()
@@ -21,6 +21,7 @@ const focus = ref(initialFocus(sizes.value))
 
 const now = ref(new Date())
 const clock = computed(() => formatTime(now.value, config.clock24h))
+const date = computed(() => formatDate(now.value))
 let tickTimer: ReturnType<typeof setTimeout> | undefined
 function scheduleTick() {
   clearTimeout(tickTimer)
@@ -93,10 +94,12 @@ onUnmounted(() => {
   <main class="home">
     <img v-if="photoOk" class="wallpaper" :src="config.wallpaper" alt="" @error="photoOk = false" />
     <div class="scrim" />
-    <Clock data-test="clock" :text="clock" />
+    <div class="side">
+      <Clock :time="clock" :date="date" />
+      <AppList v-if="dock.length" :items="dock" :focused="focus.area === 'dock' ? focus.dock : null" />
+      <p v-else data-test="empty-dock" class="empty">No apps yet. Press ▶ for All apps.</p>
+    </div>
     <TopBar :focused="focus.area === 'top' ? focus.top : null" />
-    <Dock v-if="dock.length" :items="dock" :focused="focus.area === 'dock' ? focus.dock : null" />
-    <p v-else data-test="empty-dock" class="empty glass">No apps yet. Press ▲ for All apps.</p>
     <AllApps v-if="focus.area === 'grid'" :apps="grid" :focused="focus.grid" />
     <div v-if="toast" data-test="toast" class="toast glass">{{ toast }}</div>
   </main>

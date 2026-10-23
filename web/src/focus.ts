@@ -1,6 +1,6 @@
 // Remote-control focus as a pure state machine, so it can be tested without a DOM.
-// Areas: the dock along the bottom, the two top-right icons (0 = All apps,
-// 1 = Settings), and the All apps grid overlay.
+// Areas: the app list down the left side ('dock', from config.dock), the two
+// top-right icons (0 = All apps, 1 = Settings), and the All apps grid overlay.
 
 export type Area = 'dock' | 'top' | 'grid'
 export interface FocusState {
@@ -57,7 +57,8 @@ export function step(s: FocusState, a: Action, sizes: Sizes): { state: FocusStat
   if (s.area === 'top') {
     switch (a) {
       case 'left':
-        return to({ top: 0 })
+        if (s.top === 1) return to({ top: 0 })
+        return sizes.dock > 0 ? to({ area: 'dock' }) : stay
       case 'right':
         return to({ top: 1 })
       case 'down':
@@ -70,11 +71,11 @@ export function step(s: FocusState, a: Action, sizes: Sizes): { state: FocusStat
   }
 
   switch (a) {
-    case 'left':
-      return to({ dock: clamp(s.dock - 1, sizes.dock - 1) })
-    case 'right':
-      return to({ dock: clamp(s.dock + 1, sizes.dock - 1) })
     case 'up':
+      return to({ dock: clamp(s.dock - 1, sizes.dock - 1) })
+    case 'down':
+      return to({ dock: clamp(s.dock + 1, sizes.dock - 1) })
+    case 'right':
       return to({ area: 'top', top: 0 })
     case 'ok':
       return sizes.dock > 0 ? { state: s, effect: { kind: 'launch', from: 'dock', index: s.dock } } : stay

@@ -57,10 +57,10 @@ afterEach(() => {
 })
 
 describe('App', () => {
-  it('right then OK launches the second dock app', async () => {
+  it('down then OK launches the second app in the list', async () => {
     const bridge = fakeBridge()
     w = mount(App, { props: { bridge } })
-    await press('right', 'ok')
+    await press('down', 'ok')
     expect(bridge.launch).toHaveBeenCalledWith('com.disney.disneyplus')
   })
 
@@ -80,13 +80,13 @@ describe('App', () => {
 
   it('empty dock shows message and focuses All apps', () => {
     w = mount(App, { props: { bridge: fakeBridge([ALL[6]]) } })
-    expect(w.find('[data-test=empty-dock]').text()).toBe('No apps yet. Press ▲ for All apps.')
+    expect(w.find('[data-test=empty-dock]').text()).toBe('No apps yet. Press ▶ for All apps.')
     expect(w.findAll('[data-test=top-icon]')[0].classes()).toContain('is-focused')
   })
 
-  it('Up, OK opens All apps; tvhome:back returns to dock', async () => {
+  it('Right, OK opens All apps; tvhome:back returns to the list', async () => {
     w = mount(App, { props: { bridge: fakeBridge() } })
-    await press('right', 'right', 'up', 'ok')
+    await press('down', 'down', 'right', 'ok')
     expect(w.find('[data-test=grid]').exists()).toBe(true)
     await fire('tvhome:back')
     expect(w.find('[data-test=grid]').exists()).toBe(false)
@@ -104,9 +104,19 @@ describe('App', () => {
   it('OK in All apps launches the focused app', async () => {
     const bridge = fakeBridge()
     w = mount(App, { props: { bridge } })
-    await press('up', 'ok', 'right', 'ok')
+    await press('right', 'ok', 'right', 'ok')
     // A to Z: Disney+, Jellyfin, ... → index 1 is Jellyfin
     expect(bridge.launch).toHaveBeenCalledWith('org.jellyfin.androidtv')
+  })
+
+  it('shows the date under the clock', () => {
+    w = mount(App, { props: { bridge: fakeBridge() } })
+    expect(w.find('[data-test=date]').text()).toBe('Friday 23 October')
+  })
+
+  it('list shows names only, no icons', () => {
+    w = mount(App, { props: { bridge: fakeBridge() } })
+    expect(w.findAll('[data-test=dock-tile] img, [data-test=dock-tile] .letter')).toHaveLength(0)
   })
 
   it('tvhome:resume re-lists apps and refreshes clock', async () => {
@@ -123,7 +133,7 @@ describe('App', () => {
     const apps = [...ALL]
     const bridge = { ...fakeBridge(), listApps: vi.fn(() => [...apps]) }
     w = mount(App, { props: { bridge } })
-    await press('right', 'right', 'right', 'right', 'right') // Spotify, the 6th tile
+    await press('down', 'down', 'down', 'down', 'down') // Spotify, the 6th item
     apps.splice(5, 1)
     await fire('tvhome:resume')
     const tiles = w.findAll('[data-test=dock-tile]')
@@ -142,7 +152,7 @@ describe('App', () => {
   it('Settings icon calls openSettings', async () => {
     const bridge = fakeBridge()
     w = mount(App, { props: { bridge } })
-    await press('up', 'right', 'ok')
+    await press('right', 'right', 'ok')
     expect(bridge.openSettings).toHaveBeenCalledTimes(1)
   })
 })

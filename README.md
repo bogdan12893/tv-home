@@ -6,7 +6,7 @@ Design: [docs/design.md](docs/design.md) · Plan: [docs/plan.md](docs/plan.md)
 
 ## Change something
 
-Most things live in [`web/src/config.ts`](web/src/config.ts): which apps sit in the dock and in what order, the clock format, and the wallpaper. Drop a photo into `web/public/` and point `wallpaper` at it. Styling is in `web/src/styles.css` and the components in `web/src/components/`.
+Most things live in [`web/src/config.ts`](web/src/config.ts): which apps are in the list on the left and in what order, the clock format, and the wallpaper. Drop a photo into `web/public/` and point `wallpaper` at it. Styling is in `web/src/styles.css` and the components in `web/src/components/`.
 
 The TV shows the page at 960×540 CSS px.
 

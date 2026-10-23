@@ -6,7 +6,7 @@ export interface DockEntry {
 }
 
 export const config: { dock: DockEntry[]; clock24h: boolean; wallpaper: string } = {
-  // Shown left to right. Apps that aren't installed are skipped.
+  // The list on the left, top to bottom. Apps that aren't installed are skipped.
   dock: [
     { name: 'Netflix', pkg: 'com.netflix.ninja' },
     { name: 'Disney+', pkg: 'com.disney.disneyplus' },

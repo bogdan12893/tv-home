@@ -12,24 +12,30 @@ describe('focus', () => {
     expect(initialFocus({ dock: 0, grid: 3 }).area).toBe('top')
   })
 
-  it('clamps at dock ends', () => {
+  it('clamps at list ends', () => {
     let s = initialFocus(S)
-    for (let i = 0; i < 20; i++) s = step(s, 'right', S).state
+    for (let i = 0; i < 20; i++) s = step(s, 'down', S).state
     expect(s.dock).toBe(5)
-    s = step(s, 'left', S).state
+    s = step(s, 'up', S).state
     expect(s.dock).toBe(4)
-    for (let i = 0; i < 20; i++) s = step(s, 'left', S).state
+    for (let i = 0; i < 20; i++) s = step(s, 'up', S).state
     expect(s.dock).toBe(0)
+  })
+
+  it('left in the list does nothing', () => {
+    const s = { ...initialFocus(S), dock: 2 }
+    expect(step(s, 'left', S).state).toEqual(s)
   })
 
   it('ok on dock launches', () => {
     expect(step({ ...initialFocus(S), dock: 2 }, 'ok', S).effect).toEqual({ kind: 'launch', from: 'dock', index: 2 })
   })
 
-  it('up goes to top All apps, down returns to same dock index', () => {
-    const up = step({ ...initialFocus(S), dock: 3 }, 'up', S).state
-    expect(up).toMatchObject({ area: 'top', top: 0 })
-    expect(step(up, 'down', S).state).toMatchObject({ area: 'dock', dock: 3 })
+  it('right goes to top All apps; left or down return to the same list item', () => {
+    const top = step({ ...initialFocus(S), dock: 3 }, 'right', S).state
+    expect(top).toMatchObject({ area: 'top', top: 0 })
+    expect(step(top, 'left', S).state).toMatchObject({ area: 'dock', dock: 3 })
+    expect(step(top, 'down', S).state).toMatchObject({ area: 'dock', dock: 3 })
   })
 
   it('left and right move between the two top icons', () => {
@@ -39,9 +45,10 @@ describe('focus', () => {
     expect(step({ ...top, top: 1 }, 'left', S).state.top).toBe(0)
   })
 
-  it('down from top does nothing when dock is empty', () => {
+  it('down or left from top does nothing when the list is empty', () => {
     const e = { dock: 0, grid: 3 }
     expect(step(initialFocus(e), 'down', e).state.area).toBe('top')
+    expect(step(initialFocus(e), 'left', e).state.area).toBe('top')
   })
 
   it('ok on All apps opens grid at 0', () => {

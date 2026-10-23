@@ -1,20 +1,26 @@
 <script setup lang="ts">
-defineProps<{ text: string }>()
+defineProps<{ time: string; date: string }>()
 </script>
 
 <template>
-  <div class="clock">{{ text }}</div>
+  <header class="clock">
+    <div data-test="clock" class="time">{{ time }}</div>
+    <div data-test="date" class="date">{{ date }}</div>
+  </header>
 </template>
 
 <style scoped>
-.clock {
-  position: absolute;
-  top: 28px;
-  left: 40px;
-  font-size: 40px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+.time {
+  font-size: 96px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.25);
+}
+.date {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  opacity: 0.85;
 }
 </style>

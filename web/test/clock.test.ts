@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatTime, msToNextMinute } from '../src/clock'
+import { formatDate, formatTime, msToNextMinute } from '../src/clock'
 
 describe('clock', () => {
   it('24h pads', () => {
@@ -13,5 +13,10 @@ describe('clock', () => {
 
   it('ms to next minute', () => {
     expect(msToNextMinute(new Date(2026, 9, 23, 9, 5, 59, 500))).toBe(500)
+  })
+
+  it('date reads weekday, day and month', () => {
+    expect(formatDate(new Date(2026, 9, 23))).toBe('Friday 23 October')
+    expect(formatDate(new Date(2026, 0, 4))).toBe('Sunday 4 January')
   })
 })
