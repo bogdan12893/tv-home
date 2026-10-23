@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DockItem } from '../dock'
+import AppGlyph from './AppGlyph.vue'
 
 defineProps<{ items: DockItem[]; focused: number | null }>()
 </script>
@@ -13,7 +14,10 @@ defineProps<{ items: DockItem[]; focused: number | null }>()
       class="item"
       :class="{ 'is-focused': focused === i }"
     >
-      <span class="name">{{ item.name }}</span>
+      <span class="row">
+        <AppGlyph :name="item.glyph" />
+        <span class="name">{{ item.name }}</span>
+      </span>
     </li>
   </ul>
 </template>
@@ -46,17 +50,21 @@ defineProps<{ items: DockItem[]; focused: number | null }>()
   opacity: 0;
   transition: opacity var(--ease);
 }
-.name {
+.row {
   position: relative;
-  display: block;
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  gap: 14px;
   opacity: 0.6;
   transition: opacity var(--ease);
 }
+.name {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.25;
+}
 .item.is-focused::before,
-.item.is-focused .name {
+.item.is-focused .row {
   opacity: 1;
 }
 </style>

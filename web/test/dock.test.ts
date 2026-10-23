@@ -14,6 +14,11 @@ describe('resolveDock', () => {
     ])
   })
 
+  it('passes the config glyph through', () => {
+    const [item] = resolveDock([{ name: 'Netflix', pkg: 'n', glyph: 'netflix' }], [{ name: 'Netflix', pkg: 'n', icon: '' }])
+    expect(item.glyph).toBe('netflix')
+  })
+
   it('drops entries that are not installed', () => {
     expect(resolveDock([{ name: 'Max', pkg: 'm' }], [])).toEqual([])
   })

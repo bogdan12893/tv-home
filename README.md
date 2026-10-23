@@ -6,7 +6,7 @@ Design: [docs/design.md](docs/design.md) · Plan: [docs/plan.md](docs/plan.md)
 
 ## Change something
 
-Most things live in [`web/src/config.ts`](web/src/config.ts): which apps are in the list on the left and in what order, the clock format, and the wallpaper. Drop a photo into `web/public/` and point `wallpaper` at it. Styling is in `web/src/styles.css` and the components in `web/src/components/`.
+Most things live in [`web/src/config.ts`](web/src/config.ts): which apps are in the list on the left and in what order, the clock format, and the wallpaper. Drop a photo into `web/public/` and point `wallpaper` at it. Each app's small white icon is its `glyph` in the config; the available icons are listed in [`web/src/glyphs.ts`](web/src/glyphs.ts) (brand logos from Simple Icons, line icons from Lucide). Styling is in `web/src/styles.css` and the components in `web/src/components/`.
 
 The TV shows the page at 960×540 CSS px.
 

@@ -114,8 +114,10 @@ describe('App', () => {
     expect(w.find('[data-test=date]').text()).toBe('Friday 23 October')
   })
 
-  it('list shows names only, no icons', () => {
+  it('each list item shows a white glyph, not the Android icon', () => {
     w = mount(App, { props: { bridge: fakeBridge() } })
+    const tiles = w.findAll('[data-test=dock-tile]')
+    expect(tiles.map(t => t.findAll('svg[data-test=glyph]').length)).toEqual([1, 1, 1, 1, 1, 1])
     expect(w.findAll('[data-test=dock-tile] img, [data-test=dock-tile] .letter')).toHaveLength(0)
   })
 
