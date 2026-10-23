@@ -1,11 +1,13 @@
 package dev.bogdan.tvhome
 
-const val DEV_TIMEOUT_MS = 4000L
+// The dev server is on the LAN and answers in milliseconds; this only covers a Mac that's asleep or gone.
+const val DEV_TIMEOUT_MS = 2000L
 const val ERROR_PAGE = "tvhome:error"
 
 /**
  * Decides what the WebView loads. In live mode it tries the dev server first and
- * falls back to the bundled page on an error or after DEV_TIMEOUT_MS, so the
+ * falls back to the bundled page on an error or when nothing has drawn within
+ * DEV_TIMEOUT_MS, so the
  * home screen is never blank. If even the bundled page fails, it shows ERROR_PAGE.
  */
 class PageLoader(private val devUrl: String?) {
@@ -20,6 +22,9 @@ class PageLoader(private val devUrl: String?) {
         loaded = true
         return true
     }
+
+    /** The page has drawn its first frame: the dev server is alive, so stop the timeout. */
+    fun onCommitVisible(url: String): Boolean = onMainFrameFinished(url)
 
     fun onMainFrameError(url: String): String? {
         if (!isCurrent(url)) return null

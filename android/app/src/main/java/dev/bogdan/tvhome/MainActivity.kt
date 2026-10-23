@@ -30,12 +30,16 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Encode app icons while the WebView starts up (~3.5 s on this TV), so the page's
+        // first listApps() call doesn't have to wait for them.
+        val bridge = TvHomeBridge(applicationContext)
+        Thread { bridge.listApps() }.start()
         WebView.setWebContentsDebuggingEnabled(true)
         web = WebView(this).apply {
             setBackgroundColor(Color.BLACK)
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
-            addJavascriptInterface(TvHomeBridge(applicationContext), "TvHome")
+            addJavascriptInterface(bridge, "TvHome")
             webViewClient = Client()
         }
         setContentView(web)
@@ -95,6 +99,10 @@ class MainActivity : ComponentActivity() {
 
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
             !isAllowed(request.url.toString(), devUrl)
+
+        override fun onPageCommitVisible(view: WebView, url: String) {
+            if (loader.onCommitVisible(url)) handler.removeCallbacks(timeout)
+        }
 
         override fun onPageFinished(view: WebView, url: String) {
             if (loader.onMainFrameFinished(url)) handler.removeCallbacks(timeout)

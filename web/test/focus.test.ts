@@ -71,6 +71,13 @@ describe('focus', () => {
     }
   })
 
+  it('back from grid with an empty dock goes to top', () => {
+    const e = { dock: 0, grid: 3 }
+    for (const a of ['back', 'resume'] as const) {
+      expect(step({ area: 'grid', dock: 0, top: 0, grid: 2 }, a, e).state).toEqual({ area: 'top', dock: 0, top: 0, grid: 0 })
+    }
+  })
+
   it('back on dock is a no-op', () => {
     const s = { ...initialFocus(S), dock: 2 }
     expect(step(s, 'back', S)).toEqual({ state: s, effect: null })

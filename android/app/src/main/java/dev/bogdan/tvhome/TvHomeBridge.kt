@@ -12,7 +12,6 @@ import android.webkit.JavascriptInterface
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
-import kotlin.math.min
 
 /** window.TvHome in the page. Called on a WebView background thread. */
 class TvHomeBridge(private val context: Context) {
@@ -65,11 +64,7 @@ class TvHomeBridge(private val context: Context) {
     }
 
     private fun toDataUrl(d: Drawable): String {
-        val w = d.intrinsicWidth.takeIf { it > 0 } ?: 320
-        val h = d.intrinsicHeight.takeIf { it > 0 } ?: 180
-        val scale = min(1f, min(320f / w, 180f / h))
-        val bw = (w * scale).toInt().coerceAtLeast(1)
-        val bh = (h * scale).toInt().coerceAtLeast(1)
+        val (bw, bh) = fitIcon(d.intrinsicWidth, d.intrinsicHeight)
         val bitmap = Bitmap.createBitmap(bw, bh, Bitmap.Config.ARGB_8888)
         d.setBounds(0, 0, bw, bh)
         d.draw(Canvas(bitmap))

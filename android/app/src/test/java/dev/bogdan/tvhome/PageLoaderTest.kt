@@ -43,4 +43,18 @@ class PageLoaderTest {
         p.onTimeout()
         assertNull(p.onTimeout())
     }
+
+    @Test fun devCommitCancelsTimeout() {
+        val p = PageLoader(dev); p.start()
+        assertTrue(p.onCommitVisible(dev))
+        assertNull(p.onTimeout())
+    }
+
+    @Test fun commitAfterErrorIgnored() {
+        val p = PageLoader(dev); p.start()
+        p.onMainFrameError(dev)
+        assertFalse(p.onCommitVisible(dev))
+    }
+
+    @Test fun timeoutIsShort() = assertTrue(DEV_TIMEOUT_MS <= 2000)
 }

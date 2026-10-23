@@ -93,6 +93,14 @@ describe('App', () => {
     expect(w.findAll('[data-test=dock-tile]')[2].classes()).toContain('is-focused')
   })
 
+  it('Back from All apps with an empty dock focuses All apps again', async () => {
+    w = mount(App, { props: { bridge: fakeBridge([ALL[6]]) } })
+    await press('ok')
+    expect(w.find('[data-test=grid]').exists()).toBe(true)
+    await fire('tvhome:back')
+    expect(w.findAll('[data-test=top-icon]')[0].classes()).toContain('is-focused')
+  })
+
   it('OK in All apps launches the focused app', async () => {
     const bridge = fakeBridge()
     w = mount(App, { props: { bridge } })

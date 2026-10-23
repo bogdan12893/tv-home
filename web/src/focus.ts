@@ -40,7 +40,7 @@ export function step(s: FocusState, a: Action, sizes: Sizes): { state: FocusStat
     switch (a) {
       case 'back':
       case 'resume':
-        return to({ area: 'dock', grid: 0 })
+        return sizes.dock > 0 ? to({ area: 'dock', grid: 0 }) : to({ area: 'top', top: 0, grid: 0 })
       case 'left':
         return to({ grid: clamp(s.grid - 1, last) })
       case 'right':
