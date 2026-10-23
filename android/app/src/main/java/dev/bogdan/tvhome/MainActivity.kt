@@ -41,6 +41,7 @@ class MainActivity : ComponentActivity() {
         setContentView(web)
         // Back never leaves the home screen; the page decides what it means (e.g. close All apps).
         onBackPressedDispatcher.addCallback(this) { dispatch("tvhome:back") }
+        applyDevUrl(intent)
         reload()
     }
 
@@ -52,7 +53,14 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        dispatch("tvhome:resume")
+        if (applyDevUrl(intent)) reload() else dispatch("tvhome:resume")
+    }
+
+    /** scripts/dev.sh sends `--es devUrl <url|off>`. Returns true when live mode changed. */
+    private fun applyDevUrl(intent: Intent): Boolean = when (val cmd = parseDevUrl(intent.getStringExtra("devUrl"))) {
+        is DevUrlCommand.Set -> { prefs.edit().putString("devUrl", cmd.url).apply(); true }
+        DevUrlCommand.Clear -> { prefs.edit().remove("devUrl").apply(); true }
+        DevUrlCommand.Ignore -> false
     }
 
     override fun onDestroy() {
