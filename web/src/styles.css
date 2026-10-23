@@ -1,0 +1,95 @@
+/* Designed for the TV's 960×540 CSS viewport. Animations stick to transform
+   and opacity so they stay smooth on the TV. */
+
+:root {
+  --ink: #f4f6f7;
+  --glass: rgba(20, 24, 26, 0.35);
+  --glass-edge: rgba(255, 255, 255, 0.08);
+  --focus: rgba(255, 255, 255, 0.18);
+  --ease: 0.15s ease-out;
+  font-family: 'Manrope', system-ui, sans-serif;
+  color: var(--ink);
+  background: #0f1417;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: none;
+}
+
+.home {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(160deg, #2b3a42, #0f1417);
+}
+
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Darkens the top and bottom edges so the clock and dock always read. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.28), transparent 30%, transparent 60%, rgba(0, 0, 0, 0.3));
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  border-radius: 20px;
+  backdrop-filter: blur(24px) saturate(1.2);
+}
+
+/* Focus: a lighter pane fades in behind the content and the tile grows slightly. */
+.focusable {
+  position: relative;
+  transition: transform var(--ease);
+}
+.focusable::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--focus);
+  opacity: 0;
+  transition: opacity var(--ease);
+}
+.focusable.is-focused {
+  transform: scale(1.04);
+}
+.focusable.is-focused::before {
+  opacity: 1;
+}
+
+.empty {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 32px;
+  margin: 0;
+  padding: 40px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.toast {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
