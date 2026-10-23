@@ -12,7 +12,7 @@ export const config: { dock: DockEntry[]; clock24h: boolean; wallpaper: string }
   // The list on the left, top to bottom. Apps that aren't installed are skipped.
   dock: [
     { name: 'Netflix', pkg: 'com.netflix.ninja', glyph: 'netflix' },
-    { name: 'Disney+', pkg: 'com.disney.disneyplus', glyph: 'castle' },
+    { name: 'Disney+', pkg: 'com.disney.disneyplus', glyph: 'disneyplus' },
     { name: 'Max', pkg: 'com.wbd.stream', glyph: 'max' },
     { name: 'Jellyfin', pkg: 'org.jellyfin.androidtv', glyph: 'jellyfin' },
     { name: 'SmartTube', pkg: 'org.smarttube.stable', glyph: 'youtube' },

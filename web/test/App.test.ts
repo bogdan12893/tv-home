@@ -117,7 +117,7 @@ describe('App', () => {
   it('each list item shows a white glyph, not the Android icon', () => {
     w = mount(App, { props: { bridge: fakeBridge() } })
     const tiles = w.findAll('[data-test=dock-tile]')
-    expect(tiles.map(t => t.findAll('svg[data-test=glyph]').length)).toEqual([1, 1, 1, 1, 1, 1])
+    expect(tiles.map(t => t.findAll('[data-test=glyph]').length)).toEqual([1, 1, 1, 1, 1, 1])
     expect(w.findAll('[data-test=dock-tile] img, [data-test=dock-tile] .letter')).toHaveLength(0)
   })
 
