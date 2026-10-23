@@ -4,7 +4,7 @@
 // To add one: import it here, give it a name, and use that name as `glyph` in config.ts.
 // A PNG needs a transparent background; 48 px is sharp at the TV's 24 px icon size.
 
-import { Castle } from '@lucide/vue'
+import { Castle, Tv } from '@lucide/vue'
 import { siJellyfin, siNetflix, siSpotify, siYoutube } from 'simple-icons'
 import type { Component } from 'vue'
 import disneyPlusPng from './assets/glyphs/disney-plus.png'
@@ -25,6 +25,7 @@ export const GLYPHS = {
   youtube: brand(siYoutube),
   spotify: brand(siSpotify),
   castle: { kind: 'line', component: Castle } as Glyph,
+  tv: { kind: 'line', component: Tv } as Glyph,
 }
 
 export type GlyphName = keyof typeof GLYPHS

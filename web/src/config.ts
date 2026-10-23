@@ -17,6 +17,8 @@ export const config: { dock: DockEntry[]; clock24h: boolean; wallpaper: string }
     { name: 'Jellyfin', pkg: 'org.jellyfin.androidtv', glyph: 'jellyfin' },
     { name: 'SmartTube', pkg: 'org.smarttube.stable', glyph: 'youtube' },
     { name: 'Spotify', pkg: 'com.spotify.tv.android', glyph: 'spotify' },
+    // Sony's TV app: opens live TV on the last channel you watched.
+    { name: 'TV Channels', pkg: 'com.sony.dtv.tvx', glyph: 'tv' },
   ],
   clock24h: true,
   // Drop a JPG into web/public/ and point at it here.
