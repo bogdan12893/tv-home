@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cleartext is needed for the Vite dev server on the LAN. Android can't limit it to
+     the Mac's changing IP, so MainActivity refuses to navigate anywhere except the
+     bundled origin and the current dev URL (see OriginPolicy.kt). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
