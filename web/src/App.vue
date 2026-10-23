@@ -94,8 +94,8 @@ onUnmounted(() => {
   <main class="home">
     <img v-if="photoOk" class="wallpaper" :src="config.wallpaper" alt="" @error="photoOk = false" />
     <div class="scrim" />
+    <Clock class="corner" :time="clock" :date="date" />
     <div class="side">
-      <Clock :time="clock" :date="date" />
       <AppList v-if="dock.length" :items="dock" :focused="focus.area === 'dock' ? focus.dock : null" />
       <p v-else data-test="empty-dock" class="empty">No apps yet. Press ▶ for All apps.</p>
     </div>

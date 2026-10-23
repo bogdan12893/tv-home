@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Index 0 = All apps, 1 = Settings (matches focus.ts).
+// Index 0 = All apps, 1 = Settings (matches focus.ts). Sits in the bottom-right corner.
 defineProps<{ focused: number | null }>()
 </script>
 
@@ -17,8 +17,8 @@ defineProps<{ focused: number | null }>()
 <style scoped>
 .top {
   position: absolute;
-  top: 30px;
-  right: 34px;
+  bottom: 36px;
+  right: 46px;
   display: flex;
   gap: 8px;
 }
