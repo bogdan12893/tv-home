@@ -1,4 +1,4 @@
-package dev.bogdan.tvhome
+package com.tvhome.launcher
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

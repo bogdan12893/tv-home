@@ -15,7 +15,7 @@
 - TV: Android 9 / API 28, WebView 138, 1920×1080 at density 320, armeabi-v7a, at `192.168.0.99:5555` (scripts use `TV="${TV:-192.168.0.99:5555}"`).
 - **Design the page for a 960×540 CSS px viewport** (devicePixelRatio 2). The page uses `<meta name="viewport" content="width=device-width, initial-scale=1">`.
 - `minSdk 28`. Ship no native libraries.
-- Android package and applicationId: `dev.bogdan.tvhome`. Activity: `dev.bogdan.tvhome/.MainActivity`.
+- Android package and applicationId: `com.tvhome.launcher`. Activity: `com.tvhome.launcher/.MainActivity`.
 - Bundled URL: `https://appassets.androidplatform.net/assets/web/index.html`. Vite `base: './'`, `build.outDir: '../android/app/src/main/assets/web'` (gitignored).
 - Dock, in order: Netflix `com.netflix.ninja`, Disney+ `com.disney.disneyplus`, Max `com.wbd.stream`, Jellyfin `org.jellyfin.androidtv`, SmartTube `org.smarttube.stable`, Spotify `com.spotify.tv.android`.
 - 24-hour clock. No ads, no content rows, no settings screen on the TV.
@@ -68,14 +68,14 @@
     app/src/main/res/xml/network_security_config.xml
     app/src/main/res/drawable/banner.xml, ic_launcher.xml   vector drawables
     app/src/main/res/values/themes.xml                      black window background, no action bar
-    app/src/main/java/dev/bogdan/tvhome/
+    app/src/main/java/com/tvhome/launcher/
       MainActivity.kt            WebView host, back/resume events, PageLoader wiring, dev URL storage
       TvHomeBridge.kt            @JavascriptInterface listApps/launch/openSettings + icon cache
       AppCatalog.kt              mergeLaunchables (pure)
       OriginPolicy.kt            BUNDLED_* constants, isAllowed (pure)
       DevUrl.kt                  parseDevUrl (pure)
       PageLoader.kt              load/fallback state machine (pure)
-    app/src/test/java/dev/bogdan/tvhome/*Test.kt            JUnit 4
+    app/src/test/java/com/tvhome/launcher/*Test.kt            JUnit 4
 ~/tv-tools/launcher-swap.sh, launcher-restore.sh, CHEATSHEET.md     modified in Task 6
 ```
 
@@ -114,7 +114,7 @@
   // bridge.ts
   export interface AppInfo { name: string; pkg: string; icon: string }   // icon: data URL or ''
   export interface Bridge { listApps(): AppInfo[]; launch(pkg: string): boolean; openSettings(): void }
-  export const SELF_PKG = 'dev.bogdan.tvhome'
+  export const SELF_PKG = 'com.tvhome.launcher'
   export const mockBridge: Bridge
   export function createBridge(w?: Window): Bridge
   // native shape: window.TvHome = { listApps(): string /* JSON AppInfo[] */, launch(pkg: string): boolean, openSettings(): void }
@@ -233,7 +233,7 @@
 
 **Files:**
 - Create: all the `android/` files in File Structure, and `scripts/deploy.sh`
-- Test: `android/app/src/test/java/dev/bogdan/tvhome/AppCatalogTest.kt`, `OriginPolicyTest.kt`, `DevUrlTest.kt`, `PageLoaderTest.kt`
+- Test: `android/app/src/test/java/com/tvhome/launcher/AppCatalogTest.kt`, `OriginPolicyTest.kt`, `DevUrlTest.kt`, `PageLoaderTest.kt`
 
 **Interfaces:**
 - Consumes: the native bridge shape and the event names from Task 2, and the built page in `android/app/src/main/assets/web/`.
@@ -259,7 +259,7 @@
     fun onTimeout(): String?                     // still waiting on dev target → BUNDLED_URL; else null
   }
   ```
-  - `scripts/deploy.sh`: runs `npm --prefix web run build`, then `(cd android && ./gradlew assembleDebug)`, then `adb -s "$TV" install -r android/app/build/outputs/apk/debug/app-debug.apk`, then `adb -s "$TV" shell am start -n dev.bogdan.tvhome/.MainActivity`.
+  - `scripts/deploy.sh`: runs `npm --prefix web run build`, then `(cd android && ./gradlew assembleDebug)`, then `adb -s "$TV" install -r android/app/build/outputs/apk/debug/app-debug.apk`, then `adb -s "$TV" shell am start -n com.tvhome.launcher/.MainActivity`.
 
 - [ ] **Step 1: Generate the Gradle project.**
   - Run `gradle wrapper` inside `android/`.
@@ -279,7 +279,7 @@
   @Test fun junk() { assertEquals(DevUrlCommand.Ignore, parseDevUrl(null)); assertEquals(DevUrlCommand.Ignore, parseDevUrl("javascript:alert(1)")); assertEquals(DevUrlCommand.Ignore, parseDevUrl("ftp://x/")) }
   // AppCatalogTest
   @Test fun mergeDedupesAndDropsSelf() = assertEquals(listOf(AppEntry("Netflix","n"), AppEntry("VLC","v")),
-      mergeLaunchables(listOf(AppEntry("Netflix","n"), AppEntry("Home","dev.bogdan.tvhome")), listOf(AppEntry("Netflix (phone)","n"), AppEntry("VLC","v")), "dev.bogdan.tvhome"))
+      mergeLaunchables(listOf(AppEntry("Netflix","n"), AppEntry("Home","com.tvhome.launcher")), listOf(AppEntry("Netflix (phone)","n"), AppEntry("VLC","v")), "com.tvhome.launcher"))
   // PageLoaderTest   (dev = "http://192.168.0.54:5173/")
   @Test fun noDevStartsBundled() = assertEquals(BUNDLED_URL, PageLoader(null).start())
   @Test fun devTimeoutFallsBack() { val p = PageLoader(dev); p.start(); assertEquals(BUNDLED_URL, p.onTimeout()) }
@@ -334,7 +334,7 @@
 **Interfaces:**
 - Consumes: `parseDevUrl`, `PageLoader` and `DEV_TIMEOUT_MS` from Task 4.
 - Produces:
-  - `scripts/dev.sh on` gets the IP with `ipconfig getifaddr en0` and runs `adb -s "$TV" shell am start -n dev.bogdan.tvhome/.MainActivity --es devUrl "http://$IP:5173/"`.
+  - `scripts/dev.sh on` gets the IP with `ipconfig getifaddr en0` and runs `adb -s "$TV" shell am start -n com.tvhome.launcher/.MainActivity --es devUrl "http://$IP:5173/"`.
   - `scripts/dev.sh off` runs the same command with `--es devUrl off`.
   - In both cases, `Set` saves to prefs and `Clear` removes the key. The activity then recreates its `PageLoader` and reloads.
   - `on` prints a reminder to run `npm --prefix web run dev` first.
@@ -346,7 +346,7 @@
   - Change the clock size in `Clock.vue` and take a screenshot. Expected: the change is visible within about 2 s with no reload, then revert it.
   - If the TV can't reach the Mac, it's the macOS Local Network permission. Point the owner to `CHEATSHEET.md` step 4.
 - [ ] **Step 4: Check the fallback (Review Focus 1).**
-  - Stop Vite, then run `adb -s $TV shell am force-stop dev.bogdan.tvhome` and start it again.
+  - Stop Vite, then run `adb -s $TV shell am force-stop com.tvhome.launcher` and start it again.
   - Take a screenshot after 5 s. Expected: the bundled home screen, not an error page.
 - [ ] **Step 5: Turn live mode off and check.** Run `scripts/dev.sh off` and take a screenshot. Expected: the bundled home screen.
 - [ ] **Step 6: Commit.** `git add -A && git commit -m "feat: live mode via Vite with bundled fallback"`
@@ -356,16 +356,16 @@
 ### Task 6: Make it the home screen (owner review gate)
 
 **Files:**
-- Modify: `~/tv-tools/launcher-swap.sh` so it takes an optional activity argument, defaulting to `dev.bogdan.tvhome/.MainActivity`. Keep the existing `tvlauncher` disable and log lines.
+- Modify: `~/tv-tools/launcher-swap.sh` so it takes an optional activity argument, defaulting to `com.tvhome.launcher/.MainActivity`. Keep the existing `tvlauncher` disable and log lines.
 - Modify: `~/tv-tools/launcher-restore.sh` to add a log line to `applied.log`.
 - Modify: `~/tv-tools/CHEATSHEET.md` to add the home-screen section (deploy, dev on/off, restore).
 - Modify: `~/tv-home/README.md` (create it), covering setup, editing `web/src/config.ts`, `deploy.sh`, `dev.sh` and undo.
 
 **Interfaces:**
-- Consumes: the installed `dev.bogdan.tvhome` from Task 4.
+- Consumes: the installed `com.tvhome.launcher` from Task 4.
 
 - [ ] **Step 1: Update the two scripts and show the owner the exact adb commands they will run.**
-  - `cmd package set-home-activity dev.bogdan.tvhome/.MainActivity`
+  - `cmd package set-home-activity com.tvhome.launcher/.MainActivity`
   - `pm disable-user --user 0 com.google.android.tvlauncher`
   - The undo is `./launcher-restore.sh`.
   - Wait for a yes.

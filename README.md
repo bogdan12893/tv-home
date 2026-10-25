@@ -37,3 +37,7 @@ From `~/tv-tools`:
 - `./launcher-restore.sh` brings Google's launcher back. TV Home stays installed.
 
 Both log to `~/tv-tools/applied.log`.
+
+## License
+
+The code is [MIT](LICENSE). It doesn't cover the bundled pictures: `web/public/wallpaper.jpg` and the Streamline icons in `web/src/assets/glyphs/` keep their own terms, so swap in your own if you reuse this. App logos are trademarks of their owners.

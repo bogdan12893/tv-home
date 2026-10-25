@@ -21,7 +21,7 @@ interface NativeTvHome {
   openSettings(): void
 }
 
-export const SELF_PKG = 'dev.bogdan.tvhome'
+export const SELF_PKG = 'com.tvhome.launcher'
 
 const MOCK_APPS: AppInfo[] = [
   ...config.dock.map(d => ({ name: d.name, pkg: d.pkg, icon: '' })),

@@ -23,4 +23,4 @@ case "${1:-}" in
     ;;
 esac
 
-adb -s "$TV" shell am start -n dev.bogdan.tvhome/.MainActivity --es devUrl "$URL" >/dev/null
+adb -s "$TV" shell am start -n com.tvhome.launcher/.MainActivity --es devUrl "$URL" >/dev/null

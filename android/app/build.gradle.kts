@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "dev.bogdan.tvhome"
+    namespace = "com.tvhome.launcher"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "dev.bogdan.tvhome"
+        applicationId = "com.tvhome.launcher"
         minSdk = 28
         targetSdk = 35
         versionCode = 1

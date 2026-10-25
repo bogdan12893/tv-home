@@ -10,4 +10,4 @@ npm --prefix web run build
 
 adb connect "$TV" >/dev/null 2>&1 || true
 adb -s "$TV" install -r android/app/build/outputs/apk/debug/app-debug.apk
-adb -s "$TV" shell am start -n dev.bogdan.tvhome/.MainActivity
+adb -s "$TV" shell am start -n com.tvhome.launcher/.MainActivity

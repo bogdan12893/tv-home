@@ -1,4 +1,4 @@
-package dev.bogdan.tvhome
+package com.tvhome.launcher
 
 import android.content.Context
 import android.content.Intent

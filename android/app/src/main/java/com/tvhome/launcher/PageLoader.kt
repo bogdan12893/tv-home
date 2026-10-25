@@ -1,4 +1,4 @@
-package dev.bogdan.tvhome
+package com.tvhome.launcher
 
 // The dev server is on the LAN and answers in milliseconds; this only covers a Mac that's asleep or gone.
 const val DEV_TIMEOUT_MS = 2000L

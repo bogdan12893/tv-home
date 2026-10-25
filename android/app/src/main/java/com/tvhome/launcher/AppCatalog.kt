@@ -1,4 +1,4 @@
-package dev.bogdan.tvhome
+package com.tvhome.launcher
 
 data class AppEntry(val name: String, val pkg: String)
 

@@ -108,7 +108,7 @@ Google's home screen feels dated and cluttered. The goal is a calm, minimal scre
 - Wallpaper *(my call)*: ship one bundled photo with a licence that allows reuse, and make it easy to drop in your own JPG.
 - Whether to use TypeScript in `web/` (suggested: yes, lightly).
 - How focus and key handling are structured in Vue. D-pad presses arrive as arrow keys and Enter, and Back is handled natively.
-- Gradle, AGP and Kotlin versions (anything current that targets API 28+). The package name, e.g. `dev.bogdan.tvhome`.
+- Gradle, AGP and Kotlin versions (anything current that targets API 28+). The package name, e.g. `com.tvhome.launcher`.
 - Test steps for each stage. At minimum, check that it works in a desktop browser at 960×540 before it touches the TV.
 - Smaller choices: the live-mode timeout, which apps the All-apps grid hides (Sony system apps, for example), hiding a dock app that isn't installed, and a simple native error screen if the page itself fails to load.
 
